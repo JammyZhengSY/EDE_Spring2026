@@ -1,6 +1,6 @@
 ---
 title: "Assignment 1: Introduction"
-author: "Student Name"
+author: "Shiyi Zheng"
 output: pdf_document
 ---
 
@@ -9,13 +9,13 @@ output: pdf_document
 This exercise accompanies the introductory material in Environmental Data Analytics. 
 
 ## Directions
-1.  Rename this file `<FirstLast>_A01_Introduction.Rmd` (replacing `<FirstLast>` with your first and last name).
+1.  Rename this file `<ShiyiZheng>_A01_Introduction.Rmd` (replacing `<FirstLast>` with your first and last name).
 2.  Change "Student Name" on line 3 (above) with your name.
 4.  Be sure to **answer the questions** in this assignment document.
 5.  When you have completed the assignment, **Knit** the text and code into a single PDF file.
 6.  After Knitting, submit the completed exercise (PDF file) to the appropriate assignment section on Canvas.
 
-7.  Initial here to acknowledge that you did not use AI at all in completing this assignment: ___
+7.  Initial here to acknowledge that you did not use AI at all in completing this assignment: Shiyi Zheng___
 
 ---
 
@@ -24,23 +24,23 @@ Enter answers to the questions just below the >Answer: prompt.
 
 1. What are your previous experiences with data analytics, R, and Git? Include both formal and informal training.
 
-> Answer: 
+> Answer: I only have experience in Excel for simple data analysis. And I Applied it for intern and some social sciences ralated survey outcomes. I hava no R or python experience at all...
 
 2. Are there any components of the course about which you feel confident?
 
-> Answer: 
+> Answer: I would like to learn how to clean and process the quantitative data with more efficent way rather than use excel, which is the main goal for me to chose this course.
 
 3. Are there any components of the course about which you feel apprehensive?
 
-> Answer: 
+> Answer: Without the prior experience in R, it might be a bit stressful for me to get start with all technical operation. Especially the time series analysis part, which I think it's complex.
 
 4. Describe a dataset you have used in the past. Explain whether it was a primary or secondary dataset. 
 
-> Answer:
+> Answer: I have conducted a meta analysis to measure the resilence of seagrass bed by colleting the date from realted literature review. The information I extrated include auther, published year, seegrass species, the measurable number and its unit of the seagrass status, location etc. It's a secondary dataset as I generated them from other's research rather measured by myself. 
 
 5. Would you describe the day of the month as a nominal, ordinal, interval, or ratio number? Explain your reasoning.
 
-> Answer: 
+> Answer: I would describe it as ordinal number. The day of the month which countes from 1 to 30/31 has a meaningful order, but the distances between values are not uniform across months (some months have 28 or 31 days). The intervals are not consistent(NOT interval or radio) but have ordered(NOT nominal).
 
 ---
 
@@ -48,7 +48,7 @@ Enter answers to the questions just below the >Answer: prompt.
 
 Provide a link below to your forked course repository in GitHub. Make sure you have pulled all recent changes from the course repository and that you have updated your course README file, committed those changes, and pushed them to your GitHub account. 
 
-> Answer: 
+> Answer: https://github.com/JammyZhengSY/EDE_Spring2026.git
 
 ---
 
