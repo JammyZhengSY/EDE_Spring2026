@@ -3,6 +3,8 @@ title: "Lab 3a - Workspaces, Dates, and Factors"
 author: "Environmental Data Analytics | John Fay and Luana Lima "
 date: "Spring 2026"
 output: pdf_document
+editor_options: 
+  chunk_output_type: console
 ---
 
 ## Objectives
@@ -102,9 +104,9 @@ Remember formatting of dates in R:
 # (code must be uncommented)
 today <- Sys.Date()
 format(today, format = "%B")
-#format(today, format = "")
-#format(today, format = "")
-#format(today, format = "")
+format(today, format = "%A")
+format(today, format = "")
+format(today, format = "")
 
 ```
 
@@ -131,8 +133,12 @@ date_obj_today
 
 #Ex_3 - on your own...
 str_juneteenth <- "19 June 1865"
-#date_juneteenth <- ()
-#date_juneteenth
+date_juneteenth <- dmy(str_juneteenth)
+date_juneteenth
+
+the_year = "1865"
+str_juneteenth <- paste("June, 19",the_year)
+str_juneteenth
 ```
 ### The century issue
 
@@ -147,7 +153,7 @@ date_obj_past
 #Build a function to fix year that is more general than the one discussed in the lesson
 fix.early.dates <- function(d, cutoff) {
   
-       m <- year(d) %% 100  
+       m <- year(d) %% 100  #shoule become from 2026 to 26
        # The %% operator does modular division i.e. integer-divides 
        # year(d) by 100 and returns the remainder 
        
@@ -174,7 +180,7 @@ Lubridate has some built-in fixes as well:
 str_past <- "55-feb-3"
 
 #Alternative 1
-date_obj_past <- fast_strptime(str_past,"%y-%b-%d",cutoff_2000=26L)
+date_obj_past <- fast_strptime(str_past,"%y-%b-%d",cutoff_2000=26L) #use for specify the date
 date_obj_past
 
 #Alternative 2
@@ -212,7 +218,7 @@ sites <- read.csv(
 dim(sites)
 
 #Convert date column to date object
-sites$date <- ymd_hms(sites$date)
+sites$date <- ymd_hms(sites$date) 
 
 ```
 
@@ -229,7 +235,7 @@ sites$dow <- wday(sites$date)
 class(sites$dow)
 
 #List the unique values in the column
-unique(sites$dow)
+unique(sites$dow) #wed thurs frid
 
 #Summary - is it meaningful?
 summary(sites$dow)
@@ -267,8 +273,8 @@ A **factor** is a grouping variable: rows with the same value in the factor colu
 #### Plotting with factors
 ```{r plot samples recorded each day of the week}
 #Create a bar plot showing the count of samples by day of week
-ggplot(sites,aes(x=dow)) +
-  geom_bar()
+ggplot(sites,aes(x=dow)) + #indicate that the dow will bet the x-line
+  geom_bar() #plot it as bar chart
 ```
 
 #### Adding more (empty) levels to our dataset
