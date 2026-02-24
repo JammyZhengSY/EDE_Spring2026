@@ -106,13 +106,13 @@ In the code chunk below, see if you can extract the Facility Name and Facility T
 
 ```{r scraping.exercise.1}
 the_facility_name <- webpage %>% 
-  html_nodes() %>% 
+  html_nodes("tr:nth-child(2) th+ .left:nth-child(2)") %>% 
   html_text()
 the_facility_name
 
-the_facility_type <- webpage  
-  
-  
+the_facility_type <- webpage %>%
+  html_nodes("tr:nth-child(2) .left~ .left+ td.left") %>%
+  html_text()
 the_facility_type
 ```
 
@@ -137,8 +137,8 @@ max_withdrawals
 Now that we've scraped the data we want into our coding environment, the next step is to wrangle these data into formats we can work with more easily, i.e. a dataframe. Here, we emply the techniques we've learned earlier in this class to do this and then plot the data. 
 ```{r create.dataframe.from.scrapings}
 #Create a dataframe of withdrawals
-df_withdrawals <- data.frame("Month" = c(1,7,2,8,3,9,4,10,5,11,6,12), #<--NOTE: Different than recording!!
-                             "Year" = rep(2020,12),
+df_withdrawals <- data.frame("Month" = c(1:12), #<--NOTE: Different than recording!!
+                             "Year" = rep(2000,12),
                              "Avg_Withdrawals_mgd" = as.numeric(avg_withdrawals),
                              "Max_Withdrawals_mgd" = as.numeric(max_withdrawals))
 
@@ -343,7 +343,7 @@ df_2020 <- bind_rows(dfs_2020)
 
 
 #Plot
-ggplot(df_2020,aes(y = Avg_Withdrawals_mgd, x=Facility_type)) +
+ggplot(df_2020,aes(y = Avg_Withdrawals_mgd, x=Facility_name)) +
   geom_boxplot()
 
 ```
