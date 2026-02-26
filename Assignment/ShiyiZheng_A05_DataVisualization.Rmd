@@ -1,0 +1,188 @@
+---
+title: "Assignment 5: Data Visualization"
+author: "Shiyi Zheng"
+date: "Spring 2026"
+output: pdf_document
+geometry: margin=2.54cm
+fig_height: 3
+fig_width: 4
+editor_options: 
+  chunk_output_type: console
+---
+
+## OVERVIEW
+
+This exercise accompanies the lessons in Environmental Data Analytics on Data Visualization 
+
+## Directions
+1. Rename this file `<FirstLast>_A05_DataVisualization.Rmd` (replacing `<FirstLast>` with your first and last name).
+2. Change "Student Name" on line 3 (above) with your name.
+3. Work through the steps, **creating code and output** that fulfill each instruction.
+4. Be sure your code is tidy; use line breaks to ensure your code fits in the knitted output.
+5. Be sure to **answer the questions** in this assignment document.
+6. When you have completed the assignment, **Knit** the text and code into a single PDF file.
+
+---
+
+## Set up your session 
+
+1. Set up your session. Load the tidyverse, here & cowplot packages, and verify your home directory. Read in the NTL-LTER processed data files for nutrients and chemistry/physics for Peter and Paul Lakes (use the tidy `NTL-LTER_Lake_Chemistry_Nutrients_PeterPaul_Processed.csv` version in the Processed_KEY folder) and the processed data file for the Niwot Ridge litter dataset (use the `NEON_NIWO_Litter_mass_trap_Processed.csv` version, again from the Processed_KEY folder). 
+
+2. Make sure R is reading dates as date format; if not change the format to date.
+
+```{r initialize project}
+#1 
+library(tidyverse)
+library(here)
+library(cowplot)
+library(readr)
+
+getwd()
+here()
+
+NTL_LTER_Lake_Chemistry_Nutrients_PeterPaul_Processed <- read_csv("Data/Processed_KEY/NTL-LTER_Lake_Chemistry_Nutrients_PeterPaul_Processed.csv")
+
+NEON_NIWO_Litter_mass_trap_Processed <- 
+  read_csv("Data/Processed_KEY/NEON_NIWO_Litter_mass_trap_Processed.csv")
+
+#2 
+glimpse(NTL_LTER_Lake_Chemistry_Nutrients_PeterPaul_Processed)
+glimpse(NEON_NIWO_Litter_mass_trap_Processed)
+
+
+```
+## Define your theme
+3. Build a theme and set it as your default theme. Customize the look of at least two of the following: 
+ * Plot background
+ * Plot title
+ * Axis labels
+ * Axis ticks/gridlines
+ * Legend
+
+```{r build plot theme}
+#3
+theme_shiyi <- theme_classic()+
+  theme(
+    plot.background = element_rect(fill = "white",colour = NA),
+    panel.background = element_rect(fill = "pink",colour = NA),
+    plot.title = element_text(size = 12,face = "bold"),
+    legend.position = "right",
+    legend.background = element_rect(fill = "green",colour = NA),
+    legend.title = element_text(face = "bold")
+    )
+  
+theme_set(theme_shiyi)
+
+```
+
+## Create graphs
+For numbers 4-7, create ggplot graphs and adjust aesthetics to follow best practices for data visualization. Ensure your theme, color palettes, axes, and additional aesthetics are edited accordingly.
+
+4. [NTL-LTER] Plot total phosphorus (`tp_ug`) by phosphate (`po4`), with separate aesthetics for Peter and Paul lakes. Add line(s) of best fit using the `lm` method. Adjust your axes to hide extreme values (hint: change the limits using `xlim()` and/or `ylim()`).
+
+```{r plot total P vs PO4}
+#4 
+plot_A <- NTL_LTER_Lake_Chemistry_Nutrients_PeterPaul_Processed %>%
+  filter(!is.na(tp_ug),!is.na(po4)) %>%
+  ggplot(aes(x=po4, y=tp_ug, color=lakename))+
+           geom_point(alpha=0.75,size=2)+
+           geom_smooth(method = "lm",se=FALSE,linewidth=0.9)+
+           labs(title = "Total Phosphorus verse Phosphate in Peter and Paul lakes",
+                x="Phosphate",
+                y="Phosphorus",
+                color="lakename")+
+  xlim(0,30)+
+  ylim(0,70)
+
+print(plot_A)
+```
+
+
+5. [NTL-LTER] Make three separate boxplots of (a) temperature, (b) TP, and (c) TN, with month as the x axis and lake as a color aesthetic. Then, create a cowplot that combines the three graphs. Make sure that only one legend is present and that graph axes are aligned. Show all months, even those where no data was collected. 
+
+Tips:
+* Recall the discussion on factors in the lab section as it may be helpful here. 
+* Setting an axis text in your theme to `element_blank()` removes the axis text (useful when multiple, aligned plots use the same axis values)
+* Setting a legend's position to "none" will remove the legend from a plot.
+* Individual plots can have different relative sizes when combined using `cowplot`.
+
+```{r Create boxplots}
+#5 
+NTL_LTER_Lake_Chemistry_Nutrients_PeterPaul_Processed <- 
+  NTL_LTER_Lake_Chemistry_Nutrients_PeterPaul_Processed %>%
+  mutate(month = factor(month,levels = 1:12,labels = month.abb))
+
+plot_temperature <- NTL_LTER_Lake_Chemistry_Nutrients_PeterPaul_Processed %>%
+  ggplot(aes(x=month,y=temperature_C,fill=lakename))+
+  geom_boxplot(width = 0.7, outlier.alpha = 0.3, na.rm = TRUE)+
+  scale_x_discrete(drop=FALSE)+
+  labs(title="Temperature in 12 Months", x=NULL,fill = NULL)+
+  theme(legend.position = "top", axis.text.x = element_blank())
+print(plot_temperature)
+
+plot_TP <- NTL_LTER_Lake_Chemistry_Nutrients_PeterPaul_Processed %>%
+  ggplot(aes(x=month,y=tp_ug,fill=lakename))+
+  geom_boxplot(width = 0.7, outlier.alpha = 0.3, na.rm = TRUE)+
+  scale_x_discrete(drop=FALSE)+
+  labs(title="TP in 12 Months", x=NULL,fill = NULL)+
+  theme(legend.position = "none", axis.text.x = element_blank())
+print(plot_TP)
+
+plot_TN <- NTL_LTER_Lake_Chemistry_Nutrients_PeterPaul_Processed %>%
+  ggplot(aes(x=month,y=tn_ug,fill=lakename))+
+  geom_boxplot(width = 0.7, outlier.alpha = 0.3, na.rm = TRUE)+
+  scale_x_discrete(drop=FALSE)+
+  labs(title="TN in 12 Months",x=NULL,fill = NULL)+
+  theme(legend.position = "none")
+print(plot_TN)
+
+legend_shared <- cowplot::get_legend(plot_temperature)
+plot_temperature_noleg <- plot_temperature + theme(legend.position = "top")
+plot_TP_noleg <- plot_TP + theme(legend.position = "none")
+plot_TN_noleg <- plot_TN + theme(legend.position = "none")
+
+boxes_combined <- cowplot::plot_grid(legend_shared,
+  cowplot::plot_grid(
+    plot_temperature_noleg,plot_TP_noleg,plot_TN_noleg,
+    ncol = 1,
+    align = "v",
+    axis = "lr"),
+  ncol = 1,
+  rel_heights = c(0.05,1))
+print(boxes_combined)
+
+```
+
+Question: What do you observe about the variables of interest over seasons and between lakes? 
+
+> Answer: Across seasons, temperature shows a clear seasonal pattern, increasing from late spring (May) through mid-summer (July–August) and then declining toward early fall (September). This trend is consistent in both lakes, reflecting expected seasonal warming.Total phosphorus (TP) and total nitrogen (TN) also exhibit seasonal variation, with generally higher concentrations during the summer months. Variability appears greater in mid-to-late summer, especially for TN, suggesting stronger nutrient fluctuations during periods of higher biological activity.Between lakes, Peter Lake generally shows slightly higher median TP and TN concentrations compared to Paul Lake, particularly during peak summer months. However, temperature distributions between the two lakes are relatively similar, indicating that differences in nutrient dynamics are not solely driven by temperature.
+
+6. [Niwot Ridge] Plot a subset of the litter dataset by displaying only the "Needles" functional group. Plot the dry mass of needle litter by date and separate by NLCD class with a color aesthetic. (no need to adjust the name of each land use)
+
+7. [Niwot Ridge] Now, plot the same plot but with NLCD classes separated into three facets rather than separated by color. 
+
+```{r Plot litter}
+#6
+NEON_Needles <- NEON_NIWO_Litter_mass_trap_Processed %>%
+  filter(functionalGroup == "Needles")
+
+plot_drymass <-ggplot(NEON_Needles, aes(x =collectDate, y =dryMass,color=nlcdClass) )+
+  geom_point(alpha = 0.7) +
+  geom_line(alpha = 0.6) +
+  labs(title = "Needle Litter Dry Mass Over Time")
+print(plot_drymass)
+
+#7
+
+plot_Needles_2 <-ggplot(NEON_Needles,aes(x=collectDate, y =dryMass))+
+  geom_point(alpha = 0.7) +
+  geom_line(alpha = 0.6) +
+  facet_wrap(~nlcdClass, ncol = 1) +
+  labs(
+    title = "Needle Litter Dry Mass Over Time by NLCD Class"
+  )
+print(plot_Needles_2)
+```
+Question: Which of these plots (6 vs. 7) do you think is more effective, and why? 
+
+> Answer:The faceted plot for quetsioin 8 is more effective for comparing needle litter dry mass across NLCD classes. By separating each land cover class into its own panel, the trends over time are easier to interpret without visual overlap. In contrast, when NLCD classes are separated only by color, the lines and points may overlap, making it more difficult to distinguish patterns clearly. Faceting reduces visual clutter and allows for clearer comparison of seasonal dynamics within each class.
