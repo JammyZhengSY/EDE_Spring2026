@@ -3,11 +3,11 @@ title: "A07 - Crafting Reports"
 author: "Shiyi Zheng"
 date: "Spring 2026"
 output:
-  pdf_document:
-    toc: true
-    number_sections: true
   html_document:
     df_print: paged
+  pdf_document:
+    toc: true
+    number_sections: false
 ---
 \listoffigures
 
@@ -141,8 +141,9 @@ epa_data %>%
 
 Add a **table of contents** and **list of figures** to your document and knit to a PDF. Submit your PDF to Canvas, but also be sure to commit and push your Rmd file used to create this knit document to GitHub. In the section below, add a link to your GitHub repository. **Lastly, add the statement that you did not use AI in the completion of this assignment followed by your name and the date.**
 
-I did not use AI in the completion of this assignment.
-Shiyi Zheng_Feb 28,2026
 
 ## Git Repository
 https://github.com/JammyZhengSY/EDE_Spring2026
+
+I did not use AI in the completion of this assignment.
+Shiyi Zheng_Feb 28,2026
